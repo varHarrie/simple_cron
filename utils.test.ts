@@ -5,7 +5,7 @@ Deno.test("utils", async (t) => {
   await t.step("createRange", () => {
     assertEquals(createRange(1, 5), [1, 2, 3, 4, 5]);
     assertEquals(createRange(2, 8), [2, 3, 4, 5, 6, 7, 8]);
-    assertEquals(createRange(5, 1), [2, 3, 4, 5, 6, 7, 8]);
+    assertEquals(createRange(5, 1), [1, 2, 3, 4, 5]);
     assertEquals(createRange(8, 2), [2, 3, 4, 5, 6, 7, 8]);
   });
 
