@@ -1,13 +1,20 @@
 import { parseExpression } from "./parse.ts";
 
-export function convertTimezone(date: Date, timezone: number | string) {
+export function convertTimezone(
+  date: Date,
+  timezone: number | string | undefined
+) {
+  if (timezone === undefined) {
+    return date;
+  }
+
   if (typeof timezone === "number") {
     const utcTime = date.getTime() + date.getTimezoneOffset() * 60000;
     return new Date(utcTime + timezone * 60000);
-  } else {
-    const localTime = date.toLocaleString("en-US", { timeZone: timezone });
-    return new Date(localTime);
   }
+
+  const localTime = date.toLocaleString("en-US", { timeZone: timezone });
+  return new Date(localTime);
 }
 
 export function isMatched(values: number[][], date: Date) {
@@ -23,7 +30,7 @@ export function isMatched(values: number[][], date: Date) {
 
 export class Scheduler extends EventTarget {
   #values: number[][];
-  #timezone: number | string;
+  #timezone: number | string | undefined;
   #recover: boolean;
 
   #timer: number | undefined;
@@ -36,7 +43,7 @@ export class Scheduler extends EventTarget {
     super();
 
     this.#values = parseExpression(expression);
-    this.#timezone = timezone ?? 0;
+    this.#timezone = timezone;
     this.#recover = recover ?? false;
   }
 
