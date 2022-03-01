@@ -125,7 +125,7 @@ export function parseValues(element: string, index: number) {
 
 export function parseExpression(expression: string) {
   const pattern = expression.split(" ");
-  if (pattern.length === 5) pattern.push("0");
+  if (pattern.length === 5) pattern.push("*");
 
   // Month name to integer
   pattern[4] = convertMonth(pattern[4], longMonths);

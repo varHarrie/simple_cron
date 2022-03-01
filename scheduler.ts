@@ -50,13 +50,13 @@ export class Scheduler extends EventTarget {
       const now = performance.now();
       const missed = Math.floor((now - lastTime) / 1000);
 
-      for (let i = missed; i >= 0; i--) {
+      for (let i = missed; i > 0; i--) {
         const date = convertTimezone(
           new Date(Date.now() - i * interval),
           this.#timezone
         );
 
-        if ((i === 0 || this.#recover) && isMatched(this.#values, date)) {
+        if ((i === 1 || this.#recover) && isMatched(this.#values, date)) {
           this.dispatchEvent(new Event("matched"));
         }
       }
@@ -64,6 +64,8 @@ export class Scheduler extends EventTarget {
       lastTime = now;
       this.#timer = setTimeout(matchTime, interval);
     };
+
+    matchTime();
   }
 
   stop() {
